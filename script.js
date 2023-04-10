@@ -17,7 +17,7 @@ p2Score.textContent = 0;
 
 rollBtn.addEventListener("click", () => {
     diceRoll = Math.trunc(Math.random() * 6) + 1;
-    dice.src = `dice-${diceRoll}.png`;
+    dice.src = `dices/dice-${diceRoll}.png`;
     dice.classList.remove("hidden");
     let activePlayer = p1.classList.contains("player--active") ? p1 : p2;
     let inactivePlayer = p1.classList.contains("player--active") ? p2 : p1;
