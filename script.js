@@ -14,40 +14,47 @@ const dice = document.querySelector(".dice");
 dice.classList.add("hidden");
 p1Score.textContent = 0;
 p2Score.textContent = 0;
+let playing = true;
 
+const switchPlayer = (activePlayer, inactivePlayer) => {
+    activePlayer.querySelector(".current-score").textContent = 0;
+    activePlayer.classList.toggle("player--active");
+    inactivePlayer.classList.toggle("player--active");
+};
 rollBtn.addEventListener("click", () => {
-    diceRoll = Math.trunc(Math.random() * 6) + 1;
-    dice.src = `dices/dice-${diceRoll}.png`;
-    dice.classList.remove("hidden");
-    let activePlayer = p1.classList.contains("player--active") ? p1 : p2;
-    let inactivePlayer = p1.classList.contains("player--active") ? p2 : p1;
-    if (diceRoll === 1) {
-        activePlayer.querySelector(".current-score").textContent = 0;
-        activePlayer.classList.toggle("player--active");
-        inactivePlayer.classList.toggle("player--active");
-    } else {
-        activePlayer.querySelector(".current-score").textContent =
-            Number(activePlayer.querySelector(".current-score").textContent) +
-            diceRoll;
+    if (playing) {
+        diceRoll = Math.trunc(Math.random() * 6) + 1;
+        dice.src = `dices/dice-${diceRoll}.png`;
+        dice.classList.remove("hidden");
+        let activePlayer = p1.classList.contains("player--active") ? p1 : p2;
+        let inactivePlayer = p1.classList.contains("player--active") ? p2 : p1;
+        if (diceRoll === 1) {
+            switchPlayer(activePlayer, inactivePlayer);
+        } else {
+            activePlayer.querySelector(".current-score").textContent =
+                Number(
+                    activePlayer.querySelector(".current-score").textContent
+                ) + diceRoll;
+        }
     }
 });
 
 holdBtn.addEventListener("click", () => {
-    let activePlayer = p1.classList.contains("player--active") ? p1 : p2;
-    let inactivePlayer = p1.classList.contains("player--active") ? p2 : p1;
-    activePlayer.querySelector(".score").textContent =
-        Number(activePlayer.querySelector(".score").textContent) +
-        Number(activePlayer.querySelector(".current-score").textContent);
+    if (playing) {
+        let activePlayer = p1.classList.contains("player--active") ? p1 : p2;
+        let inactivePlayer = p1.classList.contains("player--active") ? p2 : p1;
+        activePlayer.querySelector(".score").textContent =
+            Number(activePlayer.querySelector(".score").textContent) +
+            Number(activePlayer.querySelector(".current-score").textContent);
 
-    if (Number(activePlayer.querySelector(".score").textContent) >= 100) {
-        activePlayer.classList.add("player--winner");
-        dice.classList.add("hidden");
-        rollBtn.disabled = true;
-        holdBtn.disabled = true;
-    } else {
-        activePlayer.querySelector(".current-score").textContent = 0;
-        activePlayer.classList.toggle("player--active");
-        inactivePlayer.classList.toggle("player--active");
+        if (Number(activePlayer.querySelector(".score").textContent) >= 100) {
+            activePlayer.classList.toggle("player--winner");
+            activePlayer.classList.toggle("player--active");
+            dice.classList.add("hidden");
+            playing = false;
+        } else {
+            switchPlayer(activePlayer, inactivePlayer);
+        }
     }
 });
 
@@ -61,6 +68,5 @@ newBtn.addEventListener("click", () => {
     p2Current.textContent = 0;
     p2Score.textContent = 0;
     dice.classList.add("hidden");
-    rollBtn.disabled = false;
-    holdBtn.disabled = false;
+    playing = true;
 });
