@@ -23,8 +23,8 @@ rollBtn.addEventListener("click", () => {
     let inactivePlayer = p1.classList.contains("player--active") ? p2 : p1;
     if (diceRoll === 1) {
         activePlayer.querySelector(".current-score").textContent = 0;
-        activePlayer.classList.remove("player--active");
-        inactivePlayer.classList.add("player--active");
+        activePlayer.classList.toggle("player--active");
+        inactivePlayer.classList.toggle("player--active");
     } else {
         activePlayer.querySelector(".current-score").textContent =
             Number(activePlayer.querySelector(".current-score").textContent) +
@@ -46,8 +46,8 @@ holdBtn.addEventListener("click", () => {
         holdBtn.disabled = true;
     } else {
         activePlayer.querySelector(".current-score").textContent = 0;
-        activePlayer.classList.remove("player--active");
-        inactivePlayer.classList.add("player--active");
+        activePlayer.classList.toggle("player--active");
+        inactivePlayer.classList.toggle("player--active");
     }
 });
 
